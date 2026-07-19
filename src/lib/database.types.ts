@@ -78,6 +78,66 @@ export type Database = {
           },
         ]
       }
+      driver_documents: {
+        Row: {
+          created_at: string | null
+          document_type: string
+          driver_id: string
+          expiry_date: string | null
+          file_type: string | null
+          file_url: string
+          id: string
+          notes: string | null
+          org_id: string
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_type: string
+          driver_id: string
+          expiry_date?: string | null
+          file_type?: string | null
+          file_url: string
+          id?: string
+          notes?: string | null
+          org_id: string
+          status?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          document_type?: string
+          driver_id?: string
+          expiry_date?: string | null
+          file_type?: string | null
+          file_url?: string
+          id?: string
+          notes?: string | null
+          org_id?: string
+          status?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_documents_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_documents_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "orgs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dvir_items: {
         Row: {
           created_at: string | null

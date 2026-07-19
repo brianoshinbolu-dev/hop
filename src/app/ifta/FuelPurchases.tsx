@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { FuelPurchase } from "./calculator";
+import ReceiptScanner from "@/components/ReceiptScanner";
 
 const STATES = [
   "AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL",
@@ -20,6 +21,7 @@ export default function FuelPurchases({ purchases, onChange }: Props) {
   const [state, setState] = useState("");
   const [gallons, setGallons] = useState("");
   const [price, setPrice] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   const addPurchase = () => {
     if (!state || !gallons || parseFloat(gallons) <= 0) return;
@@ -33,6 +35,22 @@ export default function FuelPurchases({ purchases, onChange }: Props) {
     ]);
     setGallons("");
     setPrice("");
+  };
+
+  const handleScanned = (data: {
+    date?: string;
+    vendor?: string;
+    gallons?: number;
+    price_per_gallon?: number;
+    total_cost?: number;
+    state?: string;
+    receipt_url?: string;
+  }) => {
+    if (data.state && STATES.includes(data.state)) setState(data.state);
+    if (data.gallons != null) setGallons(data.gallons.toFixed(2));
+    if (data.price_per_gallon != null) setPrice(data.price_per_gallon.toFixed(2));
+    setSuccessMsg("Receipt scanned — fields pre-filled");
+    setTimeout(() => setSuccessMsg(""), 4000);
   };
 
   const removePurchase = (idx: number) => {
@@ -92,6 +110,10 @@ export default function FuelPurchases({ purchases, onChange }: Props) {
         >
           Add purchase
         </button>
+        <ReceiptScanner onScanned={handleScanned} />
+        {successMsg && (
+          <p className="w-full text-xs font-medium text-emerald-600">{successMsg}</p>
+        )}
       </div>
 
       {purchases.length > 0 && (

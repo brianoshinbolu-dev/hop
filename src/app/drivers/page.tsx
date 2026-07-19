@@ -50,7 +50,9 @@ export default async function DriversPage() {
               <tbody className="divide-y">
                 {drivers.map((d) => (
                   <tr key={d.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 font-medium">{d.first_name} {d.last_name}</td>
+                    <td className="px-4 py-3 font-medium">
+                      <Link href={`/drivers/${d.id}`} className="text-blue-600 hover:underline">{d.first_name} {d.last_name}</Link>
+                    </td>
                     <td className="px-4 py-3 text-gray-600">{d.email}</td>
                     <td className="px-4 py-3 text-gray-600">{d.cdl_expiry}</td>
                     <td className="px-4 py-3 text-gray-600">{d.medical_card_expiry}</td>

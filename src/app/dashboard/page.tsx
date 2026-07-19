@@ -50,6 +50,11 @@ export default async function DashboardPage() {
             <Link href="/drivers" className="mt-3 inline-block text-sm text-blue-600 hover:underline">Manage drivers</Link>
           </div>
           <div className="rounded-xl bg-white p-6 shadow-sm">
+            <p className="text-sm text-gray-500">Compliance</p>
+            <p className="mt-1 text-3xl font-bold">—</p>
+            <Link href="/compliance" className="mt-3 inline-block text-sm text-blue-600 hover:underline">View dashboard</Link>
+          </div>
+          <div className="rounded-xl bg-white p-6 shadow-sm">
             <p className="text-sm text-gray-500">DVIR Reports</p>
             <p className="mt-1 text-3xl font-bold">0</p>
             <Link href="/dvir" className="mt-3 inline-block text-sm text-blue-600 hover:underline">New DVIR</Link>
