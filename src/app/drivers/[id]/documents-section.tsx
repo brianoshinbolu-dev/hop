@@ -62,6 +62,8 @@ export default function DocumentsSection({
   const [docs, setDocs] = useState<Document[]>(initialDocs);
   const [showUpload, setShowUpload] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [uploadForm, setUploadForm] = useState({
     document_type: "cdl",
@@ -79,6 +81,9 @@ export default function DocumentsSection({
     if (!file || !uploadForm.title) return;
 
     setUploading(true);
+    setProgress(0);
+    setMessage(null);
+
     const fd = new FormData();
     fd.append("file", file);
     fd.append("document_type", uploadForm.document_type);
@@ -86,19 +91,37 @@ export default function DocumentsSection({
     if (uploadForm.expiry_date) fd.append("expiry_date", uploadForm.expiry_date);
     if (uploadForm.notes) fd.append("notes", uploadForm.notes);
 
-    const res = await fetch(`/api/drivers/${driverId}/documents`, {
-      method: "POST",
-      body: fd,
-    });
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `/api/drivers/${driverId}/documents`);
 
-    if (res.ok) {
-      const doc = await res.json();
-      setDocs([doc, ...docs]);
-      setShowUpload(false);
-      setUploadForm({ document_type: "cdl", title: "", expiry_date: "", notes: "" });
-      router.refresh();
-    }
-    setUploading(false);
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        setProgress(Math.round((event.loaded * 100) / event.total));
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        const doc = JSON.parse(xhr.responseText);
+        setDocs([doc, ...docs]);
+        setShowUpload(false);
+        setUploadForm({ document_type: "cdl", title: "", expiry_date: "", notes: "" });
+        setMessage({ type: "success", text: "Document uploaded successfully." });
+        router.refresh();
+      } else {
+        setMessage({ type: "error", text: "Failed to upload document." });
+      }
+      setUploading(false);
+      setProgress(0);
+    };
+
+    xhr.onerror = () => {
+      setMessage({ type: "error", text: "An error occurred during upload." });
+      setUploading(false);
+      setProgress(0);
+    };
+
+    xhr.send(fd);
   }
 
   async function handleDelete(doc: Document) {
@@ -125,6 +148,12 @@ export default function DocumentsSection({
           {showUpload ? "Cancel" : "Upload Document"}
         </button>
       </div>
+
+      {message && (
+        <div className={`mt-4 rounded-lg p-4 text-sm ${message.type === "success" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}>
+          {message.text}
+        </div>
+      )}
 
       {showUpload && (
         <form onSubmit={handleUpload} className="mt-4 rounded-xl border bg-white p-6 shadow-sm">
@@ -179,6 +208,19 @@ export default function DocumentsSection({
               />
             </div>
           </div>
+          
+          {uploading && (
+            <div className="mt-4">
+              <div className="flex justify-between text-xs text-gray-500 mb-1">
+                <span>Uploading...</span>
+                <span>{progress}%</span>
+              </div>
+              <div className="h-2 w-full rounded-full bg-gray-200">
+                <div className="h-2 rounded-full bg-blue-600 transition-all duration-300" style={{ width: `${progress}%` }}></div>
+              </div>
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={uploading}
