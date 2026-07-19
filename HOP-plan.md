@@ -36,7 +36,7 @@
 | OCR | Gemini API (receipts, documents) | Free tier |
 | Hosting | Vercel | Free tier |
 | Monitoring | Sentry (already configured) | Free |
-| Payments | Stripe / Lemonsqueezy | Per transaction |
+| Payments | Paystack | Per transaction |
 | AI assistance | opencode (already configured) | Free |
 
 ---
@@ -77,7 +77,7 @@
 - Record retention enforcement (auto-delete after legal period)
 
 ### Week 6 — Monetization & Polish
-- Stripe/Lemonsqueezy integration
+- Paystack integration
 - Free tier enforcement (1 truck, DVIR only, 30-day retention)
 - Pro/Business tier gating
 - MCPize marketplace listing (optional)
