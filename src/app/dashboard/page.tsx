@@ -38,7 +38,7 @@ export default async function DashboardPage() {
       </header>
       <main className="mx-auto max-w-5xl px-6 py-8">
         <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
-        <div className="mt-6 grid gap-6 sm:grid-cols-3">
+        <div className="mt-6 grid gap-6 sm:grid-cols-4">
           <div className="rounded-xl bg-white p-6 shadow-sm">
             <p className="text-sm text-gray-500">Vehicles</p>
             <p className="mt-1 text-3xl font-bold">{vehicleCount ?? 0}</p>
@@ -53,6 +53,11 @@ export default async function DashboardPage() {
             <p className="text-sm text-gray-500">DVIR Reports</p>
             <p className="mt-1 text-3xl font-bold">0</p>
             <Link href="/dvir" className="mt-3 inline-block text-sm text-blue-600 hover:underline">New DVIR</Link>
+          </div>
+          <div className="rounded-xl bg-white p-6 shadow-sm">
+            <p className="text-sm text-gray-500">IFTA Fuel Tax</p>
+            <p className="mt-1 text-3xl font-bold">—</p>
+            <Link href="/ifta" className="mt-3 inline-block text-sm text-blue-600 hover:underline">Calculate</Link>
           </div>
         </div>
       </main>
