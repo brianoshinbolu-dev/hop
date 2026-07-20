@@ -1,0 +1,16 @@
+{
+  "framework": "nextjs",
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm build",
+  "outputDirectory": ".next",
+  "github": {
+    "silent": true,
+    "autoJobCancelation": true
+  },
+  "git": {
+    "deploymentEnabled": {
+      "master": true,
+      "staging": true
+    }
+  }
+}
