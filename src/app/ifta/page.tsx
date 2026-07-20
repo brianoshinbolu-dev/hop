@@ -13,7 +13,7 @@ export default async function IFTAPage() {
 
   if (!profile?.org_id) redirect("/onboarding")
 
-  const canSave = isFeatureAccessible(profile.org_id, "ifta_save")
+  const canSave = await isFeatureAccessible(profile.org_id, "ifta_save")
 
   return (
     <div className="min-h-screen bg-zinc-50">

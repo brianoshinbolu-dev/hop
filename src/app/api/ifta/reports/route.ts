@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No org found" }, { status: 403 })
   }
 
-  if (!isFeatureAccessible(profile.org_id, "ifta_save")) {
+  if (!(await isFeatureAccessible(profile.org_id, "ifta_save"))) {
     return NextResponse.json(
       { error: "Upgrade to Starter plan to save IFTA reports" },
       { status: 403 }

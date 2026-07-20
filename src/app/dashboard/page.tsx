@@ -30,6 +30,9 @@ export default async function DashboardPage() {
       <header className="flex items-center justify-between border-b bg-white px-6 py-4">
         <h1 className="text-lg font-bold">HOP</h1>
         <div className="flex items-center gap-4 text-sm text-gray-600">
+          <Link href="/account/billing" className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100">
+            {(org as Record<string, string | null> | null)?.plan === "free" ? "Free" : String((org as Record<string, string | null> | null)?.plan ?? "Free")}
+          </Link>
           <span>{org?.name}</span>
           <form action="/auth/signout" method="post">
             <button type="submit" className="text-blue-600 hover:underline">Sign out</button>
@@ -64,6 +67,11 @@ export default async function DashboardPage() {
             <p className="mt-1 text-3xl font-bold">—</p>
             <Link href="/ifta" className="mt-3 inline-block text-sm text-blue-600 hover:underline">Calculate</Link>
           </div>
+        </div>
+        <div className="mt-6 text-center">
+          <Link href="/account/billing" className="text-sm text-blue-600 hover:underline">
+            Billing & Plan Settings →
+          </Link>
         </div>
       </main>
     </div>
